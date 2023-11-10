@@ -1,0 +1,166 @@
+//
+//  Students.cpp
+//  Works1
+//
+//  Created by 舒佳瑞 on 2023/11/9.
+//
+
+#define row 20
+#define col 2
+#include <stdio.h>
+//#include <time.h>
+#include <stdlib.h>
+
+void init(double arr[row][col])
+{
+    int start=2016001;
+    int i=0;
+    for (; i<row; i++) 
+    {
+        arr[i][0]=start;
+        start+=1;
+    }
+}
+
+
+void sort(double arr[row][col])
+{
+    int i=0,j=0;
+    bool flage=true;
+    for (; i<row-1; i++) 
+    {
+        flage=true;
+        for (j=0; j<row-i-1; j++)
+        {
+            if (arr[j][1]<arr[j+1][1])
+            {
+//                arr[j][1]=arr[j][1]^arr[j+1][1];
+//                arr[j+1][1]=arr[j][1]^arr[j+1][1];
+//                arr[j][1]=arr[j][1]^arr[j+1][1];
+                int tmp=arr[j][1];
+                arr[j][1]=arr[j+1][1];
+                arr[j+1][1]=tmp;
+                tmp=arr[j][0];
+                arr[j][0]=arr[j+1][0];
+                arr[j+1][0]=tmp;
+        
+                
+            }
+            flage=false;
+        }
+        if (flage==true) {
+            return;
+        }
+    }
+}
+
+double sum(double arr[row][col])
+{
+    double sum=0;
+    int i=0;
+    for (; i<row; i++) {
+        sum+=arr[i][1];
+    }
+    return sum;
+}
+
+void classify(double arr[row][col])
+{
+    double a[5][20];
+    double tmp=row;
+    int k1=0,k2=0,k3=0,k4=0,k5=0;
+    for (int i=0; i<row; i++)
+    {
+        if (arr[i][1]>=90) {
+            a[0][k1]=arr[i][1];
+            k1++;
+        }
+        else if(arr[i][1]<90&&arr[i][1]>=80)
+        {
+            a[1][k2]=arr[i][1];
+            k2++;
+        }
+        else if(arr[i][1]<80&&arr[i][1]>=70)
+        {
+            a[2][k3]=arr[i][1];
+            k3++;
+        }
+        else if(arr[i][1]<70&&arr[i][1]>=60)
+        {
+            a[3][k4]=arr[i][1];
+            k4++;
+        }
+        else
+        {
+            a[4][k5]=arr[i][1];
+            k5++;
+        }
+    }
+    printf("成绩优秀的人有%d个，所占比例为：%g，他们的成绩如下",k1,(double)k1/tmp);
+    for (int i=0; i<k1; i+=1) {
+        printf("%g ",a[0][i]);
+    }
+    printf("\n成绩良好的人有%d个，所占比例为：%g，他们的成绩如下",k2,(double)k2/tmp);
+    for (int i=0; i<k1; i+=1) {
+        printf("%g ",a[1][i]);
+    }
+    printf("\n成绩中等的人有%d个，所占比例为：%g，他们的成绩如下",k3,(double)k3/tmp);
+    for (int i=0; i<k3; i+=1) {
+        printf("%g ",a[2][i]);
+    }
+    printf("\n成绩及格的人有%d个，所占比例为：%g，他们的成绩如下",k4,(double)k4/tmp);
+    for (int i=0; i<k4; i+=1) {
+        printf("%g ",a[3][i]);
+    }
+    printf("\n成绩不及格的人有%d个，所占比例为：%g，他们的成绩如下",k5,(double)k5/tmp);
+    for (int i=0; i<k5; i+=1) {
+        printf("%g ",a[4][i]);
+    }
+    
+}
+
+/*void test(double arr[row][col])
+{
+    for (int i=0; i<row; i++) {
+        arr[i][1] = rand() % 100 + 1;
+        printf("%g  ",arr[i][1]);
+    }
+}
+*/
+int main()
+{
+    double arr[row][col];
+    int i=0;
+    double in=0;
+    printf("请输入%d位同学的成绩\n",row);
+    while (i<row)
+    {
+        printf("请输入第%d位的成绩",i+1);
+        while (1)
+        {
+            scanf("%lf",&in);
+            if (in<0||in>100)
+            {
+                printf("有效值在0-100之间，请重新输入!\n");
+            }
+            else
+            {
+                arr[i][1]=in;
+                break;
+            }
+        }
+        i++;
+    }
+    init(arr);
+    //test(arr);
+    sort(arr);
+    printf("\n成绩从高到低为：");
+    for (int i=0; i<row; i++) {
+        printf("学号%d->成绩%g  ",(int)arr[i][0],arr[i][1]);
+    }
+    printf("\n总分为%g，平均分为%g\n",sum(arr),sum(arr)/row);
+    classify(arr);
+    
+    return 0;
+}
+
